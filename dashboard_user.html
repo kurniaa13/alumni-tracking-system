@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Alumni</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-body">
+
+<!-- HAMBURGER MENU BUTTON -->
+<button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div class="logo">
+        <img src="images/toga.png">
+        <h3>Alumni Tracking</h3>
+    </div>
+
+    <a href="javascript:void(0);" onclick="showProfile();">👤 Profil Saya</a>
+    <a href="javascript:void(0);" onclick="showDirectory();">📖 Direktori Alumni</a>
+    <a href="javascript:void(0);" onclick="showAbout();">ℹ️ Tentang</a>
+    <a href="javascript:void(0);" onclick="logout();">🚪 Logout</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h2>Dashboard Alumni</h2>
+
+        <div class="profile">
+            <img src="images/user.png" id="fotoUser">
+            <div>
+                <p class="email" id="userEmail">user@gmail.com</p>
+                <small>Alumni</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT SECTIONS -->
+    
+    <!-- PROFILE SECTION -->
+    <div id="profileSection" class="content-section">
+        <div class="form-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>👤 Profil Saya</h3>
+                <button class="btn-secondary" onclick="editProfile()">✏️ Edit Profil</button>
+            </div>
+            
+            <div id="profileView" style="margin-top: 20px;">
+                <!-- Profile content will be loaded here -->
+            </div>
+
+            <form id="profileForm" style="display: none; margin-top: 20px;" onsubmit="updateProfile(event)">
+                <fieldset>
+                    <legend>📋 Identitas Dasar</legend>
+                    <div class="form-grid">
+                        <div>
+                            <label>Nama Lengkap</label>
+                            <input type="text" id="profileNama" placeholder="Nama Lengkap" required>
+                        </div>
+                        <div>
+                            <label>NIM</label>
+                            <input type="text" id="profileNim" placeholder="NIM" readonly style="background: #f0f0f0;">
+                        </div>
+                        <div>
+                            <label>Email</label>
+                            <input type="email" id="profileEmail" placeholder="Email" required>
+                        </div>
+                        <div>
+                            <label>No. HP</label>
+                            <input type="text" id="profileHp" placeholder="No. HP" required>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>📱 Sosial Media Pribadi</legend>
+                    <div class="form-grid">
+                        <div>
+                            <label>LinkedIn</label>
+                            <input type="url" id="profileLinkedin" placeholder="https://linkedin.com/...">
+                        </div>
+                        <div>
+                            <label>Instagram</label>
+                            <input type="text" id="profileInstagram" placeholder="@username">
+                        </div>
+                        <div>
+                            <label>Facebook</label>
+                            <input type="url" id="profileFacebook" placeholder="https://facebook.com/...">
+                        </div>
+                        <div>
+                            <label>TikTok</label>
+                            <input type="text" id="profileTiktok" placeholder="@username">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>💼 Informasi Pekerjaan</legend>
+                    <div class="form-grid">
+                        <div>
+                            <label>Status Pekerjaan</label>
+                            <select id="profileStatus" required>
+                                <option value="">-- Pilih Status --</option>
+                                <option value="PNS">PNS</option>
+                                <option value="Swasta">Swasta</option>
+                                <option value="Wirausaha">Wirausaha</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Tempat Kerja</label>
+                            <input type="text" id="profileTempatKerja" placeholder="Nama Perusahaan/Instansi" required>
+                        </div>
+                        <div>
+                            <label>Alamat Kerja</label>
+                            <input type="text" id="profileAlamatBekerja" placeholder="Alamat">
+                        </div>
+                        <div>
+                            <label>Posisi/Jabatan</label>
+                            <input type="text" id="profilePosisi" placeholder="Posisi">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>🏢 Sosial Media Perusahaan</legend>
+                    <div class="form-grid">
+                        <div>
+                            <label>LinkedIn Perusahaan</label>
+                            <input type="url" id="profileLinkedinPerusahaan" placeholder="https://linkedin.com/company/...">
+                        </div>
+                        <div>
+                            <label>Instagram Perusahaan</label>
+                            <input type="text" id="profileInstagramPerusahaan" placeholder="@company">
+                        </div>
+                        <div>
+                            <label>Facebook Perusahaan</label>
+                            <input type="url" id="profileFacebookPerusahaan" placeholder="https://facebook.com/...">
+                        </div>
+                        <div>
+                            <label>TikTok Perusahaan</label>
+                            <input type="text" id="profileTiktokPerusahaan" placeholder="@company">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">💾 Simpan Perubahan</button>
+                    <button type="button" class="btn-reset" onclick="cancelEdit()">❌ Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DIRECTORY SECTION -->
+    <div id="directorySection" class="content-section" style="display: none;">
+        <div class="form-box">
+            <h3>📖 Direktori Alumni</h3>
+            
+            <div class="table-header" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <input type="text" id="userSearch" placeholder="Cari alumni..." onkeyup="searchUserAlumni()" style="flex: 1; min-width: 200px;">
+                <select id="statusFilter" onchange="filterByStatus()" style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px;">
+                    <option value="">-- Semua Status --</option>
+                    <option value="PNS">PNS</option>
+                    <option value="Swasta">Swasta</option>
+                    <option value="Wirausaha">Wirausaha</option>
+                </select>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Posisi</th>
+                        <th>Tempat Kerja</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="userTabelAlumni">
+                    <tr><td colspan="6" style="text-align: center; padding: 30px; color: #999;">Memuat data alumni...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ABOUT SECTION -->
+    <div id="aboutSection" class="content-section" style="display: none;">
+        <div class="form-box">
+            <h3>ℹ️ Tentang Sistem</h3>
+            <div style="line-height: 1.8; color: #555;">
+                <h4>Alumni Tracking System</h4>
+                <p><strong>Versi:</strong> 1.0</p>
+                <p><strong>Deskripsi:</strong> Sistem informasi untuk tracking dan pendataan alumni institusi pendidikan secara terpusat dan terintegrasi.</p>
+                
+                <h4>Fitur Utama</h4>
+                <ul>
+                    <li>📝 Pendataan alumni dengan informasi lengkap</li>
+                    <li>💼 Pencatatan informasi pekerjaan dan posisi</li>
+                    <li>📱 Integrasi sosial media (LinkedIn, Instagram, Facebook, TikTok)</li>
+                    <li>🔐 Sistem keamanan berbasis login</li>
+                    <li>📊 Dashboard analitik untuk administrator</li>
+                    <li>📖 Direktori alumni yang dapat diakses pengguna</li>
+                </ul>
+
+                <h4>Keamanan Data</h4>
+                <p>Semua data alumni disimpan secara lokal di browser Anda. Data tidak dikirim ke server manapun. Dilarang menggunakan data alumni untuk kepentingan diluar pembelajaran dan penelitian institusi.</p>
+
+                <h4>Fitur untuk Alumni</h4>
+                <ul>
+                    <li>Kelola profil pribadi dan data pekerjaan</li>
+                    <li>Kelola akun sosial media perusahaan</li>
+                    <li>Lihat direktori alumni lainnya</li>
+                    <li>Cari alumni berdasarkan nama atau status pekerjaan</li>
+                </ul>
+
+                <h4>© 2024 Alumni Tracking System</h4>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- DETAIL MODAL FOR DIRECTORY -->
+<div id="detailModal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+        <span class="close" onclick="closeDetailModal()">&times;</span>
+        <div id="detailContent"></div>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+<script>
+    // Initialize user dashboard
+    document.addEventListener("DOMContentLoaded", function() {
+        let nama = localStorage.getItem("nama");
+        let email = localStorage.getItem("email");
+        
+        if (!nama || !email) {
+            // If not logged in, redirect to login
+            window.location.href = "index.html";
+            return;
+        }
+
+        // Set user info in navbar
+        document.getElementById("userEmail").textContent = email;
+
+        // Load user profile and directory
+        loadUserProfile();
+        loadUserDirectory();
+
+        // Handle sidebar on mobile
+        let sidebarLinks = document.querySelectorAll(".sidebar a");
+        sidebarLinks.forEach(link => {
+            link.addEventListener("click", function() {
+                if (window.innerWidth <= 768) {
+                    closeSidebar();
+                }
+            });
+        });
+
+        document.addEventListener("click", function(event) {
+            let sidebar = document.getElementById("sidebar");
+            let hamburger = document.getElementById("hamburger");
+            if (sidebar && hamburger && window.innerWidth <= 768) {
+                if (!sidebar.contains(event.target) && !hamburger.contains(event.target)) {
+                    closeSidebar();
+                }
+            }
+        });
+    });
+
+    // Show profile section
+    function showProfile() {
+        document.getElementById("profileSection").style.display = "block";
+        document.getElementById("directorySection").style.display = "none";
+        document.getElementById("aboutSection").style.display = "none";
+    }
+
+    // Show directory section
+    function showDirectory() {
+        document.getElementById("profileSection").style.display = "none";
+        document.getElementById("directorySection").style.display = "block";
+        document.getElementById("aboutSection").style.display = "none";
+    }
+
+    // Show about section
+    function showAbout() {
+        document.getElementById("profileSection").style.display = "none";
+        document.getElementById("directorySection").style.display = "none";
+        document.getElementById("aboutSection").style.display = "block";
+    }
+
+    // Load user profile
+    function loadUserProfile() {
+        let nama = localStorage.getItem("nama");
+        let email = localStorage.getItem("email");
+        let nim = localStorage.getItem("nim");
+        
+        let profileData = JSON.parse(localStorage.getItem("userProfile_" + email)) || {
+            nama: nama,
+            email: email,
+            nim: nim || '',
+            hp: '',
+            status: '',
+            tempatKerja: '',
+            alamatBekerja: '',
+            posisi: '',
+            linkedin: '',
+            instagram: '',
+            facebook: '',
+            tiktok: '',
+            linkedinPerusahaan: '',
+            instagramPerusahaan: '',
+            facebookPerusahaan: '',
+            tiktokPerusahaan: '',
+            verif: 'Belum'
+        };
+
+        // Display profile
+        let profileHtml = `
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <p><strong>Nama:</strong> ${profileData.nama}</p>
+                        <p><strong>NIM:</strong> ${profileData.nim || '-'}</p>
+                        <p><strong>Email:</strong> ${profileData.email}</p>
+                        <p><strong>No. HP:</strong> ${profileData.hp || '-'}</p>
+                    </div>
+                    <div>
+                        <p><strong>Status Pekerjaan:</strong> <span style="background: #e3f2fd; padding: 4px 8px; border-radius: 4px;">${profileData.status || '-'}</span></p>
+                        <p><strong>Tempat Kerja:</strong> ${profileData.tempatKerja || '-'}</p>
+                        <p><strong>Alamat Kerja:</strong> ${profileData.alamatBekerja || '-'}</p>
+                        <p><strong>Posisi:</strong> ${profileData.posisi || '-'}</p>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                    <p><strong>Status Verifikasi:</strong> <span style="background: ${profileData.verif === 'Terverifikasi' ? '#d4edda' : '#fff3cd'}; padding: 4px 8px; border-radius: 4px; color: ${profileData.verif === 'Terverifikasi' ? '#155724' : '#856404'};">${profileData.verif}</span></p>
+                </div>
+            </div>
+        `;
+
+        document.getElementById("profileView").innerHTML = profileHtml;
+
+        // Set form values for editing
+        document.getElementById("profileNama").value = profileData.nama;
+        document.getElementById("profileNim").value = profileData.nim || '';
+        document.getElementById("profileEmail").value = profileData.email;
+        document.getElementById("profileHp").value = profileData.hp || '';
+        document.getElementById("profileStatus").value = profileData.status || '';
+        document.getElementById("profileTempatKerja").value = profileData.tempatKerja || '';
+        document.getElementById("profileAlamatBekerja").value = profileData.alamatBekerja || '';
+        document.getElementById("profilePosisi").value = profileData.posisi || '';
+        document.getElementById("profileLinkedin").value = profileData.linkedin || '';
+        document.getElementById("profileInstagram").value = profileData.instagram || '';
+        document.getElementById("profileFacebook").value = profileData.facebook || '';
+        document.getElementById("profileTiktok").value = profileData.tiktok || '';
+        document.getElementById("profileLinkedinPerusahaan").value = profileData.linkedinPerusahaan || '';
+        document.getElementById("profileInstagramPerusahaan").value = profileData.instagramPerusahaan || '';
+        document.getElementById("profileFacebookPerusahaan").value = profileData.facebookPerusahaan || '';
+        document.getElementById("profileTiktokPerusahaan").value = profileData.tiktokPerusahaan || '';
+    }
+
+    // Edit profile
+    function editProfile() {
+        document.getElementById("profileView").style.display = "none";
+        document.getElementById("profileForm").style.display = "block";
+    }
+
+    // Cancel edit
+    function cancelEdit() {
+        document.getElementById("profileView").style.display = "block";
+        document.getElementById("profileForm").style.display = "none";
+    }
+
+    // Update profile
+    function updateProfile(e) {
+        e.preventDefault();
+
+        let email = localStorage.getItem("email");
+        let profileData = {
+            nama: document.getElementById("profileNama").value,
+            email: document.getElementById("profileEmail").value,
+            nim: document.getElementById("profileNim").value,
+            hp: document.getElementById("profileHp").value,
+            status: document.getElementById("profileStatus").value,
+            tempatKerja: document.getElementById("profileTempatKerja").value,
+            alamatBekerja: document.getElementById("profileAlamatBekerja").value,
+            posisi: document.getElementById("profilePosisi").value,
+            linkedin: document.getElementById("profileLinkedin").value,
+            instagram: document.getElementById("profileInstagram").value,
+            facebook: document.getElementById("profileFacebook").value,
+            tiktok: document.getElementById("profileTiktok").value,
+            linkedinPerusahaan: document.getElementById("profileLinkedinPerusahaan").value,
+            instagramPerusahaan: document.getElementById("profileInstagramPerusahaan").value,
+            facebookPerusahaan: document.getElementById("profileFacebookPerusahaan").value,
+            tiktokPerusahaan: document.getElementById("profileTiktokPerusahaan").value,
+            verif: JSON.parse(localStorage.getItem("userProfile_" + email))?.verif || "Belum"
+        };
+
+        localStorage.setItem("userProfile_" + email, JSON.stringify(profileData));
+        alert("Profil berhasil diperbarui!");
+        cancelEdit();
+        loadUserProfile();
+    }
+
+    // Load user directory
+    function loadUserDirectory() {
+        let alumniData = JSON.parse(localStorage.getItem("alumni")) || [];
+        let tabel = document.getElementById("userTabelAlumni");
+
+        if (alumniData.length === 0) {
+            tabel.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px; color: #999;">Belum ada data alumni</td></tr>';
+            return;
+        }
+
+        let html = alumniData.map((alumni, index) => {
+            const statusColor = {
+                'PNS': '#e3f2fd',
+                'Swasta': '#f3e5f5',
+                'Wirausaha': '#e8f5e9'
+            }[alumni.status] || '#fce4ec';
+
+            return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td><strong>${alumni.nama}</strong></td>
+                    <td>${alumni.posisi || '-'}</td>
+                    <td>${alumni.tempatKerja}</td>
+                    <td><span style="background: ${statusColor}; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${alumni.status}</span></td>
+                    <td>
+                        <button class="btn-detail" onclick="showUserDetail(${index})">👁️ Lihat</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        tabel.innerHTML = html;
+    }
+
+    // Search user alumni
+    function searchUserAlumni() {
+        let keyword = document.getElementById("userSearch").value.toLowerCase();
+        let alumniData = JSON.parse(localStorage.getItem("alumni")) || [];
+        let tabel = document.getElementById("userTabelAlumni");
+
+        let filtered = alumniData.filter(a => 
+            a.nama.toLowerCase().includes(keyword) || 
+            a.nim.toLowerCase().includes(keyword)
+        );
+
+        if (filtered.length === 0) {
+            tabel.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px; color: #999;">Tidak ada alumni yang cocok</td></tr>';
+            return;
+        }
+
+        let html = filtered.map((alumni, idx) => {
+            const statusColor = {
+                'PNS': '#e3f2fd',
+                'Swasta': '#f3e5f5',
+                'Wirausaha': '#e8f5e9'
+            }[alumni.status] || '#fce4ec';
+
+            let originalIndex = alumniData.findIndex(item => item.nim === alumni.nim);
+
+            return `
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td><strong>${alumni.nama}</strong></td>
+                    <td>${alumni.posisi || '-'}</td>
+                    <td>${alumni.tempatKerja}</td>
+                    <td><span style="background: ${statusColor}; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${alumni.status}</span></td>
+                    <td>
+                        <button class="btn-detail" onclick="showUserDetail(${originalIndex})">👁️ Lihat</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        tabel.innerHTML = html;
+    }
+
+    // Filter by status
+    function filterByStatus() {
+        let status = document.getElementById("statusFilter").value;
+        let alumniData = JSON.parse(localStorage.getItem("alumni")) || [];
+        let tabel = document.getElementById("userTabelAlumni");
+
+        let filtered = status ? alumniData.filter(a => a.status === status) : alumniData;
+
+        if (filtered.length === 0) {
+            tabel.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px; color: #999;">Tidak ada alumni dengan status tersebut</td></tr>';
+            return;
+        }
+
+        let html = filtered.map((alumni, idx) => {
+            const statusColor = {
+                'PNS': '#e3f2fd',
+                'Swasta': '#f3e5f5',
+                'Wirausaha': '#e8f5e9'
+            }[alumni.status] || '#fce4ec';
+
+            let originalIndex = alumniData.findIndex(item => item.nim === alumni.nim);
+
+            return `
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td><strong>${alumni.nama}</strong></td>
+                    <td>${alumni.posisi || '-'}</td>
+                    <td>${alumni.tempatKerja}</td>
+                    <td><span style="background: ${statusColor}; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${alumni.status}</span></td>
+                    <td>
+                        <button class="btn-detail" onclick="showUserDetail(${originalIndex})">👁️ Lihat</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        tabel.innerHTML = html;
+    }
+
+    // Show user detail
+    function showUserDetail(index) {
+        let data = JSON.parse(localStorage.getItem("alumni"));
+        if (!data || !data[index]) return;
+
+        let alumni = data[index];
+
+        let detail = `
+            <h2>${alumni.nama}</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                <div>
+                    <h4>📋 Identitas Dasar</h4>
+                    <p><strong>NIM:</strong> ${alumni.nim}</p>
+                    <p><strong>Email:</strong> <a href="mailto:${alumni.email}">${alumni.email}</a></p>
+                    <p><strong>HP:</strong> <a href="tel:${alumni.hp}">${alumni.hp}</a></p>
+                </div>
+                <div>
+                    <h4>💼 Informasi Pekerjaan</h4>
+                    <p><strong>Status:</strong> <span style="background: #e3f2fd; padding: 4px 8px; border-radius: 4px;">${alumni.status}</span></p>
+                    <p><strong>Tempat Bekerja:</strong> ${alumni.tempatKerja}</p>
+                    <p><strong>Alamat:</strong> ${alumni.alamatBekerja || '-'}</p>
+                    <p><strong>Posisi:</strong> ${alumni.posisi || '-'}</p>
+                </div>
+                <div>
+                    <h4>📱 Sosial Media Pribadi</h4>
+                    <p><strong>LinkedIn:</strong> ${alumni.linkedin ? '<a href="' + alumni.linkedin + '" target="_blank">Buka Profil</a>' : '-'}</p>
+                    <p><strong>Instagram:</strong> ${alumni.instagram ? '<a href="https://instagram.com/' + alumni.instagram.replace('@','') + '" target="_blank">' + alumni.instagram + '</a>' : '-'}</p>
+                    <p><strong>Facebook:</strong> ${alumni.facebook ? '<a href="' + alumni.facebook + '" target="_blank">Buka Profil</a>' : '-'}</p>
+                    <p><strong>TikTok:</strong> ${alumni.tiktok ? '<a href="https://tiktok.com/@' + alumni.tiktok.replace('@','') + '" target="_blank">' + alumni.tiktok + '</a>' : '-'}</p>
+                </div>
+                <div>
+                    <h4>🏢 Sosial Media Perusahaan</h4>
+                    <p><strong>LinkedIn:</strong> ${alumni.linkedinPerusahaan ? '<a href="' + alumni.linkedinPerusahaan + '" target="_blank">Buka Profil</a>' : '-'}</p>
+                    <p><strong>Instagram:</strong> ${alumni.instagramPerusahaan ? '<a href="https://instagram.com/' + alumni.instagramPerusahaan.replace('@','') + '" target="_blank">' + alumni.instagramPerusahaan + '</a>' : '-'}</p>
+                    <p><strong>Facebook:</strong> ${alumni.facebookPerusahaan ? '<a href="' + alumni.facebookPerusahaan + '" target="_blank">Buka Profil</a>' : '-'}</p>
+                    <p><strong>TikTok:</strong> ${alumni.tiktokPerusahaan ? '<a href="https://tiktok.com/@' + alumni.tiktokPerusahaan.replace('@','') + '" target="_blank">' + alumni.tiktokPerusahaan + '</a>' : '-'}</p>
+                </div>
+            </div>
+        `;
+
+        document.getElementById("detailContent").innerHTML = detail;
+        document.getElementById("detailModal").style.display = "block";
+    }
+
+    // Close detail modal
+    function closeDetailModal() {
+        document.getElementById("detailModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        let modal = document.getElementById("detailModal");
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
+
+
+<div class="user-container">
+    <div class="welcome-card">
+        <h1>Dashboard Alumni</h1>
+        <h2 id="welcome">Selamat datang!</h2>
+        <div class="button-group">
+            <button onclick="logout()">🚪 Logout</button>
+        </div>
+    </div>
+
+    <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+        <p>Anda berhasil login sebagai alumni. Silakan menunggu informasi lebih lanjut dari admin.</p>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+<script>
+    document.getElementById("welcome").innerText = "Selamat datang, " + localStorage.getItem("nama");
+</script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Alumni</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="bg-shape"></div>
+<div class="bg-shape2"></div>
+
+<div class="login-container">
+    <div class="login-card">
+
+        <img src="images/toga.png" class="toga-img">
+
+        <h2>Daftar Akun</h2>
+        <p class="subtitle">Lengkapi data untuk membuat akun</p>
+
+        <form onsubmit="registerUser(event)">
+            
+            <div class="input-group">
+                <span>👤</span>
+                <input type="text" id="nama" placeholder="Nama Lengkap" required>
+            </div>
+
+            <div class="input-group">
+                <span>🎓</span>
+                <input type="text" id="nim" placeholder="Nomor Induk Mahasiswa" required>
+            </div>
+
+            <div class="input-group">
+                <span>📧</span>
+                <input type="email" id="emailReg" placeholder="Email Lengkap" required>
+            </div>
+
+            <div class="input-group">
+                <span>🔒</span>
+                <input type="password" id="passReg" placeholder="Password (Min. 6 karakter)" required>
+            </div>
+
+            <div class="input-group">
+                <span>🔒</span>
+                <input type="password" id="confirmPass" placeholder="Konfirmasi Password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Daftar Sekarang</button>
+
+        </form>
+
+        <p class="register-text">
+            Sudah punya akun?
+            <span onclick="goLogin()">Login sekarang</span>
+        </p>
+
+    </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast">✔ Akun berhasil dibuat!</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>

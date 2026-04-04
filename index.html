@@ -1,83 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Sistem Pelacakan Alumni</title>
-<link rel="stylesheet" href="css/style.css">
+    <title>Login Alumni</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<div class="header">
-<h1>Sistem Pelacakan Alumni</h1>
-<p>Universitas Muhammadiyah Malang</p>
-</div>
+<div class="bg-shape"></div>
+<div class="bg-shape2"></div>
 
-<div class="container">
+<div class="login-container">
+    <div class="login-card">
 
-<div class="dashboard">
+        <img src="images/toga.png" class="toga-img">
 
-<div class="card stat">
-<h3>Total Alumni</h3>
-<p id="totalAlumni">0</p>
-</div>
+        <h2>Alumni Tracking System</h2>
+        <p class="subtitle">Silakan login untuk melanjutkan</p>
 
-<div class="card stat">
-<h3>Teridentifikasi</h3>
-<p id="teridentifikasi">0</p>
-</div>
+        <form onsubmit="login(event)">
+            
+            <div class="input-group">
+                <span>📧</span>
+                <input type="email" id="email" placeholder="Email@gmail.com" required>
+            </div>
 
-<div class="card stat">
-<h3>Perlu Verifikasi</h3>
-<p id="verifikasi">0</p>
-</div>
+            <div class="input-group">
+                <span>🔒</span>
+                <input type="password" id="password" placeholder="Password" required>
+                <span class="eye" onclick="togglePassword()">👁️</span>
+            </div>
 
-<div class="card stat">
-<h3>Belum Ditemukan</h3>
-<p id="belum">0</p>
-</div>
+            <div class="remember">
+                <input type="checkbox"> Remember me
+            </div>
 
-</div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
 
-<div class="card">
+        <p class="register-text">
+            Belum punya akun?
+            <span id="registerBtn">Daftar sekarang</span>
+        </p>
 
-<h2>Input Data Alumni</h2>
+        <p id="error" class="error"></p>
 
-<div class="form-group">
-<input type="text" id="nama" placeholder="Nama Alumni">
-<input type="text" id="prodi" placeholder="Program Studi">
-<input type="number" id="tahun" placeholder="Tahun Lulus">
-<input type="text" id="kota" placeholder="Kota">
-</div>
-
-<button onclick="tambahAlumni()">Tambah Alumni</button>
-<button onclick="lacakAlumni()">Jalankan Pelacakan</button>
-
-</div>
-
-
-<div class="card">
-
-<h2>Hasil Pelacakan Alumni</h2>
-
-<table id="tabelAlumni">
-
-<tr>
-<th>Nama</th>
-<th>Prodi</th>
-<th>Tahun</th>
-<th>Kota</th>
-<th>Status</th>
-<th>Instansi</th>
-<th>Confidence</th>
-</tr>
-
-</table>
-
-</div>
-
+    </div>
 </div>
 
 <script src="js/script.js"></script>
-
 </body>
 </html>

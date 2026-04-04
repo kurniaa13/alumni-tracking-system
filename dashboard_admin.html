@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-body">
+
+<!-- HAMBURGER MENU BUTTON -->
+<button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div class="logo">
+        <img src="images/toga.png">
+        <h3>Alumni Tracking System</h3>
+    </div>
+
+    <a href="#">🏠 Dashboard</a>
+    <a href="#">📋 Data Alumni</a>
+    <a href="#">✔ Verifikasi</a>
+    <a href="#">📊 Statistik</a>
+    <a href="#">📥 Export</a>
+    <a href="#" onclick="logout()">🚪 Logout</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h2>Dashboard Admin</h2>
+
+        <div class="profile">
+            <img src="images/user.png" id="fotoAdmin">
+            <div>
+                <p class="email">admin@gmail.com</p>
+                <small>Administrator</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATISTIK CARDS -->
+    <div class="cards">
+        <div class="card">
+            <h3 id="totalAlumni">0</h3>
+            <p>Total Alumni</p>
+        </div>
+        <div class="card">
+            <h3 id="totalPNS">0</h3>
+            <p>Alumni PNS</p>
+        </div>
+        <div class="card">
+            <h3 id="totalSwasta">0</h3>
+            <p>Alumni Swasta</p>
+        </div>
+        <div class="card">
+            <h3 id="totalWirausaha">0</h3>
+            <p>Alumni Wirausaha</p>
+        </div>
+    </div>
+
+    <!-- PRIVACY DISCLAIMER -->
+    <div class="disclaimer-box">
+        <p><strong>⚠️ PEMBERITAHUAN PRIVASI:</strong> Semua data alumni yang tersimpan dalam sistem ini hanya untuk kepentingan pembelajaran dan penelitian institusi. Dilarang keras menyebarkan atau menggunakan data ini untuk kepentingan apapun tanpa persetujuan. Sistem ini dilindungi dengan login untuk menjaga keamanan dan kerahasiaan data.</p>
+    </div>
+
+    <!-- FORM TAMBAH ALUMNI -->
+    <div class="form-box">
+        <div class="form-header">
+            <h3>➕ Tambah Data Alumni</h3>
+            <button class="btn-secondary" onclick="toggleForm(this)">Sembunyikan</button>
+        </div>
+        <form id="formAlumni" onsubmit="tambahAlumni(event)">
+            <!-- IDENTITAS DASAR -->
+            <fieldset>
+                <legend>📋 Identitas Dasar</legend>
+                <div class="form-grid">
+                    <input type="text" id="nama" placeholder="Nama Lengkap" required>
+                    <input type="text" id="nim" placeholder="NIM" required>
+                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="text" id="hp" placeholder="No. HP" required>
+                </div>
+            </fieldset>
+
+            <!-- SOSIAL MEDIA PRIBADI -->
+            <fieldset>
+                <legend>📱 Alamat Sosial Media Pribadi</legend>
+                <div class="form-grid">
+                    <input type="url" id="linkedin" placeholder="LinkedIn Profile URL">
+                    <input type="url" id="instagram" placeholder="Instagram Profile (@username)">
+                    <input type="url" id="facebook" placeholder="Facebook Profile URL">
+                    <input type="url" id="tiktok" placeholder="TikTok Profile (@username)">
+                </div>
+            </fieldset>
+
+            <!-- INFORMASI KERJA -->
+            <fieldset>
+                <legend>💼 Informasi Pekerjaan</legend>
+                <div class="form-grid">
+                    <select id="status" required>
+                        <option value="">-- Pilih Status --</option>
+                        <option value="PNS">PNS</option>
+                        <option value="Swasta">Swasta</option>
+                        <option value="Wirausaha">Wirausaha</option>
+                        <option value="Pengangguran">Pengangguran</option>
+                    </select>
+                    <input type="text" id="tempatKerja" placeholder="Tempat Bekerja / Nama Perusahaan" required>
+                    <input type="text" id="alamatBekerja" placeholder="Alamat Bekerja">
+                    <input type="text" id="posisi" placeholder="Posisi / Jabatan">
+                </div>
+            </fieldset>
+
+            <!-- SOSIAL MEDIA PERUSAHAAN -->
+            <fieldset>
+                <legend>🏢 Alamat Sosial Media Tempat Bekerja</legend>
+                <div class="form-grid">
+                    <input type="url" id="linkedinPerusahaan" placeholder="LinkedIn Perusahaan">
+                    <input type="url" id="instagramPerusahaan" placeholder="Instagram Perusahaan (@username)">
+                    <input type="url" id="facebookPerusahaan" placeholder="Facebook Perusahaan">
+                    <input type="url" id="tiktokPerusahaan" placeholder="TikTok Perusahaan (@username)">
+                </div>
+            </fieldset>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn-submit">💾 Simpan Alumni</button>
+                <button type="reset" class="btn-reset">🔄 Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- IMPORT EXCEL SECTION -->
+    <div class="import-box">
+        <div class="import-header">
+            <h3>📤 Import Data dari Excel</h3>
+        </div>
+        <div class="import-content">
+            <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" onchange="importExcel(event)">
+            <button onclick="document.getElementById('excelFile').click()" class="btn-import">📁 Pilih File Excel</button>
+            <small>Format: .xlsx, .xls, atau .csv</small>
+        </div>
+    </div>
+
+    <!-- TABEL DATA ALUMNI -->
+    <div class="table-box">
+        <div class="table-header">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search" placeholder="Cari nama, NIM, atau email..." onkeyup="searchAlumni()">
+            </div>
+            <div class="table-actions">
+                <button onclick="exportExcel()" class="btn-action">📥 Export Excel</button>
+                <button onclick="toggleTable()" class="btn-action">⚙️ Kolom</button>
+            </div>
+        </div>
+
+        <h3 id="tableTitle">Data Alumni (<span id="dataCount">0</span>)</h3>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nama</th>
+                        <th>NIM</th>
+                        <th>Email</th>
+                        <th>HP</th>
+                        <th>Posisi</th>
+                        <th>Tempat Kerja</th>
+                        <th>Status</th>
+                        <th>Verifikasi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelAlumni"></tbody>
+            </table>
+        </div>
+
+</div>
+
+<!-- DETAIL MODAL -->
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeDetailModal()">&times;</span>
+        <div id="detailContent"></div>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
